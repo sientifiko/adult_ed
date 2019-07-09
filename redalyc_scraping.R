@@ -10,9 +10,16 @@ redalyc_df <- function(url){
 
 url <- "https://www.redalyc.org/busquedaArticuloFiltros.oa?q=%22desercion%20AND%20Chile%22&a=&i=&d=&cvePais=&idp=1"
 page <- read_html( url )
-num.page <- str_remove_all( html_text( html_node(page, "tr > td:nth-child(4).btn-art-activo"   ) ), 
-                            pattern = "[\t \n]"  )
+num.page <- str_remove_all( html_text( html_node(page, 
+                            "tr > td:nth-child(4).btn-art-activo")), 
+                            pattern = "[\t \n]")
 
+basic.link <- substring(url, first = 1, last =(str_count(url)-1))
+
+
+for (i in 1:as.numeric(num.page)) {
+  
+}
 
 
 get_titles <- function(url){
@@ -20,6 +27,7 @@ get_titles <- function(url){
   titles <- html_text( html_nodes(link, "span.link-mostrar-ventana.txt-titulo-art "   )   )
   return(titles)
 } # end of get_titles
+
 
 get_url <- function(url){
   link <- read_html(url)
