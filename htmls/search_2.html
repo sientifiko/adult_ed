@@ -1,0 +1,554 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+		<html xmlns="http://www.w3.org/1999/xhtml">
+			<head>
+				<script src="/a4j/g/3_3_1.GA/org/ajax4jsf/framework.pack.js" type="text/javascript"></script><script src="/a4j/g/3_3_1.GA/org/richfaces/ui.pack.js" type="text/javascript"></script><link class="component" href="/a4j/s/3_3_1.GAorg/richfaces/renderkit/html/css/basic_both.xcss/DATB/eAHjnyduG7p8hjQACyECsQ__" rel="stylesheet" type="text/css" /><link class="component" href="/a4j/s/3_3_1.GAorg/richfaces/renderkit/html/css/extended_both.xcss/DATB/eAHjnyduG7p8hjQACyECsQ__" media="rich-extended-skinning" rel="stylesheet" type="text/css" /><link class="component" href="/a4j/s/3_3_1.GAorg/richfaces/renderkit/html/css/modalPanel.xcss/DATB/eAHjnyduG7p8hjQACyECsQ__" rel="stylesheet" type="text/css" /><link class="component" href="/a4j/s/3_3_1.GAcss/table.xcss/DATB/eAHjnyduG7p8hjQACyECsQ__" rel="stylesheet" type="text/css" /><script type="text/javascript">window.RICH_FACES_EXTENDED_SKINNING_ON=true;</script><link class="user" href="/a4j/s/3_3_1.GAstylesheet/theme.xcss/DATB/eAHjnyduG7p8hjQACyECsQ__" rel="stylesheet" type="text/css" /><link class="user" href="/stylesheet/richStyle.css" rel="stylesheet" type="text/css" /><link class="user" href="/stylesheet/redStyle2.css" rel="stylesheet" type="text/css" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+				<title>
+			B&uacute;squeda de art&iacute;culos
+				</title>	  		  	               
+			    <meta property="og:site_name" content="Redalyc.org" />
+			    <meta property="og:type" content="website" />
+			    <meta property="og:locale" content="es_LA" />
+			    <meta property="og:locale:alternate" content="en_US" />
+			    <meta property="og:locale:alternate" content="es_ES" />
+				<link rel="shortcut icon" href="/img/r.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+		<script>
+			var abierto=0, abierto2=0;
+			function filtro(t,op){
+				if(t==1){
+					if(abierto==0){
+						document.getElementById('filtro'+op).style.display = 'inline-block';
+						document.getElementById('tabla-lista'+op).style.display = 'none';
+						abierto=1;
+					}else{
+						document.getElementById('filtro'+op).style.display = '';
+						document.getElementById('tabla-lista'+op).style.display = 'inline-block';
+						abierto=0;
+					}
+				}else if(t==2){
+					if(abierto2==0){
+						document.getElementById('filtroT'+op).style.display = 'inline-block';
+						document.getElementById('tabla-tabla'+op).style.display = 'none';
+						abierto2=1;
+					}else{
+						document.getElementById('filtroT'+op).style.display = '';
+						document.getElementById('tabla-tabla'+op).style.display = 'inline-block';
+						abierto2=0;
+					}
+				}
+			}
+			function cambiaP(t,op){
+				if(t==1){
+					document.getElementById('lista'+op).style.display="block";
+					document.getElementById('tabla'+op).style.display="none";
+				}else if(t==2){
+					document.getElementById('lista'+op).style.display="none";
+					document.getElementById('tabla'+op).style.display="block";
+				}
+			}
+			function verAll(menu){
+				var x = document.querySelectorAll(".mas"+menu);
+				var i=0;
+				for(i=0;x.length>i;i++){ x[i].style.display='block'; }
+				document.getElementById('verM'+menu).style.display = 'block';
+				document.getElementById('ver'+menu).style.display = 'none';
+			}
+			function verF(menu){
+				var x = document.querySelectorAll(".mas"+menu);
+				var i=0;
+				for(i=0;x.length>i;i++){
+					x[i].style.display='none';
+				}
+				document.getElementById('verM'+menu).style.display = 'none';
+				document.getElementById('ver'+menu).style.display = 'block';
+			}
+			window.onscroll = function(ev){
+				if(481>=screen.width){
+			    	if (window.pageYOffset >= 330) {
+			    		document.getElementById('limgFil').style.position = 'fixed';
+			    		document.getElementById('limgFil').style.top = '8px';
+				        document.getElementById('imgFil').style.position = 'fixed';
+				        document.getElementById('imgFil').style.top = '10px';
+				        document.getElementById('imgFil').style.left = '';
+				        document.getElementById('imgFil2').style.position = 'fixed';
+				        document.getElementById('imgFil2').style.top = '10px';
+				        document.getElementById('imgFil2').style.left = '-3px';
+				    }else{
+				    	document.getElementById('limgFil').style.position = 'absolute';
+			    		document.getElementById('limgFil').style.top = '';
+				    	document.getElementById('imgFil').style.position = 'absolute';
+				    	document.getElementById('imgFil').style.top = '';
+				    	document.getElementById('imgFil').style.left = '-3px';
+				    	document.getElementById('imgFil2').style.position = 'absolute';
+				    	document.getElementById('imgFil2').style.top = '';
+				    	document.getElementById('imgFil2').style.left = '-10px';
+				    }
+				}
+			};
+			function buscarEnter(event){
+				if (event.which == 13 || event.keyCode == 13){
+					document.getElementById('idWaitDialog').component.show();
+					var valor = document.getElementById("inTBusqueda").value;
+					var patt=/[=|\u0025|\u0026|\u0023]{1,}/g;
+					valor = valor.replace(patt," ");
+					if(valor==""){valor="a TO z";}
+					var url = "busquedaArticuloFiltros.oa?q="+valor+"&idp=1";
+					document.location.href = url;
+					return false;
+				}
+				return true;
+			}
+			function buscar(){
+				var valor = document.getElementById("inTBusqueda").value;
+				var patt=/[=|\u0025|\u0026|\u0023]{1,}/g;
+				valor = valor.replace(patt," ");
+				if(valor==""){valor="a TO z";}
+				document.getElementById('idWaitDialog').component.show();
+				return "busquedaArticuloFiltros.oa?q="+valor+"&idp=1";
+			}
+			function aplicarFiltro(t){
+				var aux,i, anio,url, idioma,pais,area,anios="", idiomas="", paises="",areas="",op="";
+				anio = "";
+				idioma="";
+				pais="";
+				area="";
+				url = 'busquedaArticuloFiltros.oa?q="fracaso escolar AND Chile"&idp=1&';
+				if(t==2){
+					url = url +  "p=t&";
+					op="2";
+				}
+				aux = document.getElementsByName('checkAnios'+op);
+				for(i=0;aux.length>i;i++){
+					if(aux[i].checked){anios=anios+aux[i].value+" ";}
+				}
+				aux = document.getElementsByName('checkIdi'+op);
+				for(i=0;aux.length>i;i++){
+					if(aux[i].checked){idiomas=idiomas+aux[i].value+" ";}
+				}
+				aux = document.getElementsByName('checkPai'+op);
+				for(i=0;aux.length>i;i++){
+					if(aux[i].checked){paises=paises+aux[i].value+" ";}
+				}
+				aux = document.getElementsByName('checkDis'+op);
+				for(i=0;aux.length>i;i++){
+					if(aux[i].checked){areas=areas+aux[i].value+" ";}
+				}
+				if(anios.length>0){ anio = anios; }
+				if(idiomas.length>0){idioma = idiomas;}
+				if(paises.length>0){pais = paises;}
+				if(areas.length>0){area=areas;}
+				url=url+"a="+anio+"&i="+idioma+"&d="+area+"&cvePais="+pais;
+				document.location.href=url+"#panel";
+				return false;
+			}
+			function removerFiltro(t,pes,cadena){
+				var url ='busquedaArticuloFiltros.oa?q="fracaso escolar AND Chile"&idp=1&',panel='#panel';
+				if(pes==2){
+					url=url+"p=t&";
+				}
+				var i=0,p=0,aux="",array;
+				switch(t){
+					case 1:
+						aux = "";
+						aux = aux.trim();
+						if(aux.length == cadena.length){
+							aux="";
+						}else{
+							aux = (" "+aux+" ").replace(" "+cadena+" "," ");
+						}
+						url = url+"a="+aux.trim()+"&i=&d=&cvePais=";
+						document.location.href = url+panel;
+						return false;
+						break;
+					case 2:
+						aux = "";
+						array = aux.split(" ");
+						aux = aux.trim();
+						if(aux.length == cadena.length){
+							aux="";
+						}else{
+							aux = (" "+aux+" ").replace(" "+cadena+" "," ");
+						}
+						url = url+"a=&i="+aux.trim()+"&d=&cvePais=";
+						document.location.href = url+panel;
+						return false;
+						break;
+					case 3:
+						aux = "";
+						aux = aux.trim();
+						if(aux.length == cadena.length){
+							aux="";
+						}else{
+							aux = (" "+aux+" ").replace(" "+cadena+" "," ");
+						}
+						url = url+"a=&i=&d=&cvePais="+aux.trim();
+						document.location.href = url+panel;
+						return false;
+						break;
+					case 4:
+						aux = "";
+						aux = aux.trim();
+						if(aux.length == cadena.length){
+							aux="";
+						}else{
+							aux = (" "+aux+" ").replace(" "+cadena+" "," ");
+						}
+						url = url+"a=&i=&d="+aux.trim()+"&cvePais=";
+						document.location.href = url+panel;
+						return false;
+						break;
+					}
+			}
+			function liga(t,p,cadena){
+				var url= 'busquedaArticuloFiltros.oa?q="fracaso escolar AND Chile"&idp=&';
+				if(p==2){
+					url=url+"p=t&";
+				}
+				switch(t){
+					case 1:
+						url = url + "a="+cadena+"&i=&d=&cvePais=";
+						break;
+					case 2:
+						url = url + "a=&i="+cadena+"&d=&cvePais=";
+						break;
+					case 3:
+						url = url + "a=&i=&d=&cvePais="+cadena;
+						break;
+					case 4:
+						url = url + "a=&i=&d="+cadena+"&cvePais=";
+						break;
+				}
+				document.location.href=url+"#panel";
+				return false;
+			}
+			function ocultarMenu(id){
+				var a = document.getElementById('menu'+id).style.display;
+				if(a=='none'){
+					document.getElementById('menu'+id).style.display="block";
+					document.getElementById(id).innerText="-";
+				}else{
+					document.getElementById('menu'+id).style.display="none";
+					document.getElementById(id).innerText="+";
+				}
+			}
+		</script>
+		   </head>
+		   <body><div class="wrapper-red wrapper-red-r3" style="overflow-x: hidden !important;"><div class="header-wrapper-red"><div class="header-red"><div class="header-redalyc" style="width:260px;"><a href="home.oa" target="_blank"></a><a href="home.oa"><img src="img/logo.png" alt="redalyc.org" style="position: relative;left: -1px;top: 14px;" title="redalyc-logo" class="imagen-logo" /></a></div>
+						<h1 class="header-titulo hideText"><span class="texto-gris-16" style="font-size: 15px;font-weight: 100;">Sistema de Informaci&oacute;n Cient&iacute;fica Redalyc</span>
+							<br /><span class="texto-gris-16" style="font-size: 15px;font-weight: 100;">Red de Revistas Cient&iacute;ficas de Am&eacute;rica Latina y el Caribe, Espa&ntilde;a y Portugal</span>
+						</h1></div></div><div class="header-sombraInsPai"></div><div style="width:100%;height:13px;background:#D32026;margin-top:-8px;"></div><span id="_viewRoot:status"><span id="_viewRoot:status.start" style="display: none"></span><script type="text/javascript">
+window.document.getElementById('_viewRoot:status.start').onstart=function(){document.getElementById('idWaitDialog').component.show();;};
+</script><span id="_viewRoot:status.stop"></span><script type="text/javascript">
+window.document.getElementById('_viewRoot:status.stop').onstop=function(){document.getElementById('idWaitDialog').component.hide();;};
+</script></span><div id="idWaitDialog" style="display: none;"><input id="idWaitDialogOpenedState" name="idWaitDialogOpenedState" type="hidden" /><div class="rich-modalpanel " id="idWaitDialogContainer" style="position: absolute; display: none; z-index: 100; background-color: inherit;"><div class="dr-mpnl-mask-div dr-mpnl-mask-div-opaque rich-mpnl-mask-div" id="idWaitDialogDiv" style="z-index: 1;"><button class="dr-mpnl-pnl-button" id="idWaitDialogFirstHref"></button></div><div class="dr-mpnl-panel rich-mpnl_panel"><div class="rich-mp-container" id="idWaitDialogCDiv" style="position: absolute; left: 0px; top: 0px; z-index: 9;"><div class="dr-mpnl-shadow rich-mpnl-shadow" id="idWaitDialogShadowDiv" style=" opacity:0.0; filter:alpha(opacity=0);"></div><div class="dr-mpnl-ovf-hd dr-mpnl-trim dr-mpnl-pnl rich-mp-content" id="idWaitDialogContentDiv"><table border="0" cellpadding="0" cellspacing="0" class="rich-mp-content-table" id="idWaitDialogContentTable" style="height: 100%; width: 100%;"><tr style="height: 99%"><td class="dr-mpnl-pnl-b rich-mpnl-body" valign="top"></td></tr></table></div></div></div><div class="dr-mpnl-mask-div dr-mpnl-mask-div-transparent rich-mpnl-mask-div" id="idWaitDialogCursorDiv" style="z-index: -200;"><button class="dr-mpnl-pnl-button" id="idWaitDialogLastHref"></button></div><script type="text/javascript">new ModalPanel('idWaitDialog',
+				{
+					width: 10,
+					height: 10,
+
+					minWidth: -1,
+					minHeight: -1,
+
+					resizeable: false,
+					moveable: false,
+
+					left: "-100",
+					top: "-100",
+
+					zindex: 100,onresize: '',onmove: '',onshow: '',onhide: '',onbeforeshow: '',onbeforehide: '',
+					domElementAttachment: "",				
+					keepVisualState: false,
+					showWhenRendered: false,
+					selectBehavior: "disable",
+
+					autosized: false,
+					overlapEmbedObjects: false});</script></div><script type="text/javascript"></script></div><div id="panel" class="panel-resultados"><div class="resultado-busqueda-articulos" style="margin:0 auto;min-height:90px!important;padding:20px 13px 0 13px;"><div style="font-size:14px;width:100%;margin: 0 auto;height:35px;color:white;text-align:center;min-width:320px;"><div class="rect-naranja-art">B&uacute;squeda de art&iacute;culos</div><div class="div-busqueda-art"><div style="width:260px;float:left;position:relative;border-radius:20px;">
+							<input type="text" name="palabra" id="inTBusqueda" onkeypress="buscarEnter(event)" class="input-bus-art" /></div>
+						<div class="btn-submit-art" id="boton-submit" onclick="document.getElementById('idWaitDialog').component.show();document.location.href=buscar();"></div></div></div></div><div id="lista" class="resultado-busqueda-articulos" style="display:block"><div style="width:100%;height:auto;min-height:50px;"><div class="con-res-fil"><div style="display:inline-block;width:100%;"><span class="txt-resul-art">&raquo;Resultados para: "fracaso escolar AND Chile"</span><span class="txt-total-art" style="float:right;">1 - 2 de 2 documentos encontrados</span></div></div></div><div id="fil" class="menFil" style="display:none;float:left;"><label id="limgFil">
+Filtros</label>
+			<a href="#filtro" onclick="filtro(1,'');" style="position: absolute; left: -3px; margin-top: 10px;" id="imgFil"><img src="img/revJats/ham.png" title="Filtros" alt="Filtros" /></a></div><div id="filtro" class="filArt"><table style="width:100%;">
+<tbody>
+<tr>
+<td>
+					<a href="#panel" class="txt-lista-tabla" onclick="cambiaP(1,'')">
+						Lista </a><span class="txt-lista-tabla"> | </span>
+					<a href="#panel" class="txt-lista-tabla" onclick="cambiaP(2,'')">
+						Tabla </a></td>
+</tr>
+<tr>
+<td><span class="txt-titulo-filtros">Filtros de b&uacute;squeda</span></td>
+</tr>
+<tr>
+<td><input type="submit" name="j_id98" value="Aplicar Filtros" onclick="aplicarFiltro(1);" class="btn-apl-fil" /></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mA');"><span style="float:left;">A&ntilde;o:</span><span id="mA" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumA" class="menuFiltro">
+							<li style="list-style: none" class="txt-check"><label class="label-fil"> <input id="check_2013" type="checkbox" value="2013" name="checkAnios" /> <span class="check"></span> <span>2013</span>
+
+							</label> <a onclick="liga(1,1,2013);" style="cursor: pointer; float: right;" title="2013">(1)</a>
+							</li>
+							<li style="list-style: none" class="txt-check"><label class="label-fil"> <input id="check_2009" type="checkbox" value="2009" name="checkAnios" /> <span class="check"></span> <span>2009</span>
+
+							</label> <a onclick="liga(1,1,2009);" style="cursor: pointer; float: right;" title="2009">(1)</a>
+							</li><span id="verMAnio" style="display:none;">
+							<span onclick="verF('Anio');" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mI');"><span style="float:left;">Idioma:</span><span id="mI" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumI" class="menuFiltro">
+							<li style="list-style: none" class="txt-check"><label class="label-fil"> <input id="check_Espa&ntilde;ol" type="checkbox" value="1" name="checkIdi" /> <span class="check"></span> <span>Espa&ntilde;ol</span>
+							</label> <a onclick="liga(2,1,1);" style="cursor: pointer; float: right;" title="Espa&ntilde;ol">(2)</a>
+							</li><span id="verMIdi" style="display:none">
+							<span onclick="verF('Idi')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mP');"><span style="float:left;">Pa&iacute;s:</span><span id="mP" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumP" class="menuFiltro">
+							<li style="list-style: none; position: relative;" class="txt-check"><label class="label-fil"> <input id="check_Espa&ntilde;a" name="checkPai" value="42" type="checkbox" /> <span class="check"></span>
+									<span class="ltxt">Espa&ntilde;a</span>
+							</label> <a onclick="liga(3,1,42);" style="cursor: pointer; float: right;" title="Espa&ntilde;a">(2)</a>
+							</li><span id="verMPai" style="display:none;">
+							<span onclick="verF('Pai')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mD');"><span style="float:left;">Disciplina:</span><span id="mD" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumD" class="menuFiltro">
+							<li style="list-style: none; position: relative;" class="txt-check"><label class="label-fil"> <input id="check_Educaci&oacute;n" value="9" type="checkbox" name="checkDis" /> <span class="check"></span>
+									<span class="ltxt">Educaci&oacute;n</span>
+							</label> <a onclick="liga(4,1,9);" style="cursor: pointer; float: right;" title="Educaci&oacute;n">(2)</a>
+							</li><span id="verMDis" style="display:none;">
+							<span onclick="verF('Dis')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td><input type="submit" name="j_id128" value="Aplicar Filtros" onclick="aplicarFiltro(1);" style="margin-top:15px;" class="btn-apl-fil" /></td>
+</tr>
+</tbody>
+</table>
+</div><div id="tabla-lista" class="con-res-art" style=""><table class="dr-table rich-table " id="j_id129" style="margin:0 auto;width:100%;" border="0" cellpadding="0" cellspacing="0"><colgroup span="1"></colgroup><tbody id="j_id129:tb"><tr class="dr-table-row rich-table-row dr-table-firstrow rich-table-firstrow "><td class="dr-table-cell rich-table-cell " id="j_id129:0:j_id130">
+<form id="j_id129:0:j_id131" name="j_id129:0:j_id131" method="post" action="/busquedaArticuloFiltros.oa" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id129:0:j_id131" value="j_id129:0:j_id131" />
+<table cellpadding="0" cellspacing="2">
+<tbody>
+<tr>
+<td><a href="articulo.oa?id=55127024002" target="_blank"><span class="link-mostrar-ventana txt-titulo-art">FACTORES ASOCIADOS AL ABANDONO Y LA DESERCIÓN ESCOLAR EN AMÉRICA LATINA: UNA MIRADA EN CONJUNTO</span></a></td>
+</tr>
+<tr>
+<td><a href="BusquedaAutorPorNombre.oa?filtBuscar=Marcela%20Rom%C3%A1n%20C." target="_blank"><span class=" link-mostrar-ventana txt-gris-art">Marcela Román C..</span></a></td>
+</tr>
+<tr>
+<td><a href="revista.oa?id=551"><span class="link-mostrar-ventana txt-gris-art">REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educación,  </span></a><a href="toc.oa?id=551&numero=27024" target="_blank"><span class="link-mostrar-ventana txt-gris-art">2013 11 (2) </span></a></td>
+</tr>
+<tr>
+<td><span class="txt-negro-art cut-text"> texto sobre <B>fracaso</B> <B>escolar</B> en <B>Chile</B> publicado en el año 
+2009. Las cifras y su distribución siguen siendo muy parecidas, están de hecho casi... 2009 (Román, 2009), recortando de esa 
+mirada global del <B>fracaso</B> <B>escolar</B> en <B>Chile</B>, lo propio del abandono y la deserción escolar y, que  se explica</span></td>
+</tr>
+<tr>
+<td><div class="block-art"><span class="txt-negro-art">Texto completo:</span><a href="articulo.oa?id=55127024002" target="_blank" class="txt-negro-art"><span class="link-mostrar-ventana txt-negro-art">PDF[Espa&ntilde;ol]</span></a></div><div class="block-art" style="top:0;"><span class="txt-negro-art" style="float:left;margin-right:15.333px;">Compartir: </span><a href="https://twitter.com/intent/tweet?original_referer=http%3A//www.redalyc.org/articulo.oa%3Fid=439642479001&text=%20http%3A//www.redalyc.org/articulo.oa%3Fid=55127024002%20v%C3%ADa%20%40redalyc" style="text-decoration: none;" title="Compartir en Twitter" target="_blank"><img src="/img/tablatwitter.png" class="Style-Img-Compartir" alt="" /></a><a href="http://www.facebook.com/sharer.php?u=http%3A//www.redalyc.org/articulo.oa%3Fid=55127024002" title="Compartir en Facebook" target="_blank"><img src="/img/tablafacebook.png" class="Style-Img-Compartir" alt="" /></a><a href="https://plus.google.com/share?url=http%3A//www.redalyc.org/articulo.oa%3Fid=55127024002" title="Compartir Google+" target="_blank"><img src="/img/tablagoogle.png" class="Style-Img-Compartir" alt="" /></a></div></td>
+</tr>
+</tbody>
+</table>
+<input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></td></tr><tr class="dr-table-row rich-table-row "><td class="dr-table-cell rich-table-cell " id="j_id129:1:j_id130">
+<form id="j_id129:1:j_id131" name="j_id129:1:j_id131" method="post" action="/busquedaArticuloFiltros.oa" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id129:1:j_id131" value="j_id129:1:j_id131" />
+<table cellpadding="0" cellspacing="2">
+<tbody>
+<tr>
+<td><a href="articulo.oa?id=55114094006" target="_blank"><span class="link-mostrar-ventana txt-titulo-art">EL FRACASO ESCOLAR DE LOS JÓVENES EN LA ENSEÑANZA MEDIA. ¿QUIÉNES Y POR QUÉ ABANDONAN DEFINITIVAMENTE EL LICEO EN CHILE?</span></a></td>
+</tr>
+<tr>
+<td><a href="BusquedaAutorPorNombre.oa?filtBuscar=Marcela%20Rom%C3%A1n" target="_blank"><span class=" link-mostrar-ventana txt-gris-art">Marcela Román.</span></a></td>
+</tr>
+<tr>
+<td><a href="revista.oa?id=551"><span class="link-mostrar-ventana txt-gris-art">REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educación,  </span></a><a href="toc.oa?id=551&numero=14094" target="_blank"><span class="link-mostrar-ventana txt-gris-art">2009 7 (4) </span></a></td>
+</tr>
+<tr>
+<td><span class="txt-negro-art cut-text"> con la revisión de la magnitud y consecuencias que alcanza el <B>fracaso</B> <B>escolar</B> en <B>Chile</B>, 
+entendido como repitencia, deserción y sobre edad. A...
+2
+4
+6
+8
+10
+12
+14
+16
+Tasa Deserción Enseñanza Media 
+<B>Chile</B> 1991-2007
+ El <B>Fracaso</B> <B>Escolar</B> de los Jóvenes en la Enseñanza Media ¿Quiénes y... ambiente escolar  
+• Liderazgo y conducción 
+ 
+Fuente: Elaboración...</span></td>
+</tr>
+<tr>
+<td><div class="block-art"><span class="txt-negro-art">Texto completo:</span><a href="articulo.oa?id=55114094006" target="_blank" class="txt-negro-art"><span class="link-mostrar-ventana txt-negro-art">PDF[Espa&ntilde;ol]</span></a></div><div class="block-art" style="top:0;"><span class="txt-negro-art" style="float:left;margin-right:15.333px;">Compartir: </span><a href="https://twitter.com/intent/tweet?original_referer=http%3A//www.redalyc.org/articulo.oa%3Fid=439642479001&text=%20http%3A//www.redalyc.org/articulo.oa%3Fid=55114094006%20v%C3%ADa%20%40redalyc" style="text-decoration: none;" title="Compartir en Twitter" target="_blank"><img src="/img/tablatwitter.png" class="Style-Img-Compartir" alt="" /></a><a href="http://www.facebook.com/sharer.php?u=http%3A//www.redalyc.org/articulo.oa%3Fid=55114094006" title="Compartir en Facebook" target="_blank"><img src="/img/tablafacebook.png" class="Style-Img-Compartir" alt="" /></a><a href="https://plus.google.com/share?url=http%3A//www.redalyc.org/articulo.oa%3Fid=55114094006" title="Compartir Google+" target="_blank"><img src="/img/tablagoogle.png" class="Style-Img-Compartir" alt="" /></a></div></td>
+</tr>
+</tbody>
+</table>
+<input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></td></tr></tbody></table></div><div class="paginadorFiltro">
+	<script>
+		function cambiaPag(indAct,indCam,indFin,link,panel){
+			var url = link+indCam+"#"+panel;
+			if(indCam <= 0 || indCam == indAct || indCam > indFin ){
+				return false;
+			}else{
+				document.location.href=url;
+				return false;
+			}
+		}
+	</script>
+<form id="j_id202" name="j_id202" method="post" action="/busquedaArticuloFiltros.oa" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id202" value="j_id202" />
+
+		<table class="tbl-pag">
+			<tr>
+				<td onclick="cambiaPag( 1 , 1 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;idp=' , 'panel' );" class="btn-art-inactivo" title="P&aacute;gina 1">&laquo;&laquo;
+				</td>
+				<td onclick="cambiaPag( 1 , 0 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;idp=' , 'panel' );" class="btn-art-inactivo" title="P&aacute;gina Anterior">&laquo;
+				</td>
+					<td onclick="cambiaPag( 1 , 1 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;idp=' , 'panel' );" class="pagSelec" title="P&aacute;gina 1 de 1">1
+					</td>
+				<td onclick="cambiaPag( 1 , 2 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;idp=' , 'panel' );" class="btn-art-inactivo" title="Siguiente P&aacute;gina">&raquo;
+				</td>
+				<td onclick="cambiaPag(1 , 1 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;idp=' , 'panel' )" class="btn-art-inactivo" title="P&aacute;gina 1">&raquo;&raquo;
+				</td>
+			</tr>
+		</table><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></div><div style="margin: 0 auto;">
+<form id="j_id218" name="j_id218" method="post" action="/busquedaArticuloFiltros.oa" class="paginadorCel" enctype="application/x-www-form-urlencoded" style="display:none;">
+<input type="hidden" name="j_id218" value="j_id218" />
+
+		<p style="padding: 5px 0 0 0;"><a href="#panel">P&aacute;gina 1</a>
+		</p><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></div></div><div id="tabla" class="resultado-busqueda-articulos" style="display:none"><div style="width:100%;height:auto;min-height:50px;"><div class="con-res-fil"><div style="display:inline-block;width:100%;"><span class="txt-resul-art">&raquo;Resultados para ""fracaso escolar AND Chile""</span><span class="txt-total-art" style="float:right;">1 - 2 de 2 documentos encontrados</span></div></div></div><div id="fil2" class="menFil" style="display:none;float:left;top:0px;">
+			<a href="#filtroT" onclick="filtro(2,'');" style="position: absolute; left: -10px;" id="imgFil2"><img src="img/revJats/ham.png" alt="Filtros" title="Filtros" /></a></div><div id="filtroT" class="filArt"><table style="width:100%;">
+<tbody>
+<tr>
+<td>
+					<a href="#panel" class="txt-lista-tabla" onclick="cambiaP(1,'')">
+						Lista </a><span class="txt-lista-tabla"> | </span>
+					<a href="#panel" class="txt-lista-tabla" onclick="cambiaP(2,'')">
+						Tabla </a></td>
+</tr>
+<tr>
+<td><span class="txt-titulo-filtros">Filtros de b&uacute;squeda</span></td>
+</tr>
+<tr>
+<td><input type="submit" name="j_id256" value="Aplicar Filtros" onclick="aplicarFiltro(2);" class="btn-apl-fil" /></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mA2');"><span style="float:left;">A&ntilde;o:</span><span id="mA2" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumA2" class="menuFiltro">
+							<li style="list-style: none" class="txt-check"><label class="label-fil"> <input id="check_20132" type="checkbox" value="2013" name="checkAnios2" /> <span class="check"></span> <span>2013</span>
+							</label> <a onclick="liga(1,2,2013);" style="cursor: pointer; float: right;" title="2013">(1)</a>
+							</li>
+							<li style="list-style: none" class="txt-check"><label class="label-fil"> <input id="check_20092" type="checkbox" value="2009" name="checkAnios2" /> <span class="check"></span> <span>2009</span>
+							</label> <a onclick="liga(1,2,2009);" style="cursor: pointer; float: right;" title="2009">(1)</a>
+							</li><span id="verMAnio2" style="display:none;">
+							<span onclick="verF('Anio2')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mI2');"><span style="float:left;">Idioma:</span><span id="mI2" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumI2" class="menuFiltro">
+							<li style="list-style: none" class="txt-check"><label class="label-fil"> <input id="check_Espa&ntilde;ol2" type="checkbox" value="1" name="checkIdi2" /> <span class="check"></span> <span>Espa&ntilde;ol</span>
+							</label> <a onclick="liga(2,2,1);" style="cursor: pointer; float: right;" title="Espa&ntilde;ol">(2)</a>
+							</li><span id="verMIdi2" style="display:none">
+							<span onclick="verF('Idi2')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mP2');"><span style="float:left;">Pa&iacute;s:</span><span id="mP2" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumP2" class="menuFiltro">
+							<li style="list-style: none; position: relative;" class="txt-check"><label class="label-fil"> <input id="check_Espa&ntilde;a2" name="checkPai2" value="42" type="checkbox" /> <span class="check"></span>
+									<span class="ltxt">Espa&ntilde;a</span>
+							</label> <a onclick="liga(3,2,42);" style="cursor: pointer; float: right;" title="Espa&ntilde;a">(2)</a>
+							</li><span id="verMPai2" style="display:none;">
+							<span onclick="verF('Pai2')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td>
+					<div class="nombreMenu" onclick="ocultarMenu('mD2');"><span style="float:left;">Disciplina:</span><span id="mD2" style="float:right;margin-right:8px;">-</span>
+					</div><div id="menumD2" class="menuFiltro">
+							<li style="list-style: none; position: relative;" class="txt-check"><label class="label-fil"> <input id="check_Educaci&oacute;n2" name="checkDis2" value="9" type="checkbox" /> <span class="check"></span>
+									<span class="ltxt">Educaci&oacute;n</span>
+							</label> <a onclick="liga(4,2,9);" style="cursor: pointer; float: right;" title="Educaci&oacute;n">(2)</a>
+							</li><span id="verMDis2" style="display:none;">
+							<span onclick="verF('Dis2')" class="verM">Ver menos...</span></span></div></td>
+</tr>
+<tr>
+<td><input type="submit" name="j_id286" value="Aplicar Filtros" onclick="aplicarFiltro(2);" style="margin-top:15px;" class="btn-apl-fil" /></td>
+</tr>
+</tbody>
+</table>
+</div><div id="tabla-tabla" class="con-res-art-tab">
+<form id="j_id287" name="j_id287" method="post" action="/busquedaArticuloFiltros.oa" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id287" value="j_id287" />
+<table class="dr-table rich-table tablaTextoCompletoArt" id="j_id287:tablaTextoCompleto" style="position:relative;" border="0" cellpadding="0" cellspacing="0"><colgroup span="6"></colgroup><thead class="dr-table-thead"><tr class="dr-table-subheader rich-table-subheader "><th class="dr-table-subheadercell rich-table-subheadercell  " scope="col" id="j_id287:tablaTextoCompleto:j_id288header"><div id="j_id287:tablaTextoCompleto:j_id288header:sortDiv">T&iacute;tulo</div></th><th class="dr-table-subheadercell rich-table-subheadercell  " scope="col" id="j_id287:tablaTextoCompleto:j_id296header"><div id="j_id287:tablaTextoCompleto:j_id296header:sortDiv">Autores</div></th><th class="dr-table-subheadercell rich-table-subheadercell  " scope="col" id="j_id287:tablaTextoCompleto:j_id303header"><div id="j_id287:tablaTextoCompleto:j_id303header:sortDiv">Revista</div></th><th class="dr-table-subheadercell rich-table-subheadercell  " scope="col" id="j_id287:tablaTextoCompleto:j_id309header"><div id="j_id287:tablaTextoCompleto:j_id309header:sortDiv">N&uacute;mero</div></th><th class="dr-table-subheadercell rich-table-subheadercell  " scope="col" id="j_id287:tablaTextoCompleto:j_id321header"><div id="j_id287:tablaTextoCompleto:j_id321header:sortDiv">Resumen</div></th><th class="dr-table-subheadercell rich-table-subheadercell  " scope="col" id="j_id287:tablaTextoCompleto:j_id342header"><div id="j_id287:tablaTextoCompleto:j_id342header:sortDiv">Texto Completo</div></th></tr></thead><tbody id="j_id287:tablaTextoCompleto:tb"><tr class="dr-table-row rich-table-row dr-table-firstrow rich-table-firstrow odd-row"><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:0:j_id288" style="white-space:normal!important;word-wrap: break-word;"><span class="resultado-articulo"><a href="articulo.oa?id=55127024002"><span class="txtTabla">FACTORES ASOCIADOS AL ABANDONO Y LA DESERCIÓN ESCOLAR EN AMÉRICA LATINA: UNA MIRADA EN CONJUNTO</span></a></span></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:0:j_id296"><a href="BusquedaAutorPorNombre.oa?filtBuscar=Marcela%20Rom%C3%A1n%20C." target="_blank"><span class=" link-mostrar-ventana txt-gris-art">Marcela Román C..</span></a></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:0:j_id303" style="white-space:normal!important;"><div class="autor-resultado"><a href="revista.oa?id=551" target="_blank}"><span class="txtTabla">REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educaci&oacute;n</span></a></div></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:0:j_id309"><a href="toc.oa?id=551&numero=27024" target="_blank"><span class="txtTabla">2013 11</span><span class="txtTabla">(2)</span></a></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:0:j_id321"><div class="links-resultado"><div class="enlaces-links-resultado"></div></div></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:0:j_id342"><div style="text-align:center"><a href="articulo.oa?id=55127024002" target="_blank}"><span class="txtTabla"> PDF [es] </span></a>
+							<br />
+							<br /></div></td></tr><tr class="dr-table-row rich-table-row  even-row"><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:1:j_id288" style="white-space:normal!important;word-wrap: break-word;"><span class="resultado-articulo"><a href="articulo.oa?id=55114094006"><span class="txtTabla">EL FRACASO ESCOLAR DE LOS JÓVENES EN LA ENSEÑANZA MEDIA. ¿QUIÉNES Y POR QUÉ ABANDONAN DEFINITIVAMENTE EL LICEO EN CHILE?</span></a></span></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:1:j_id296"><a href="BusquedaAutorPorNombre.oa?filtBuscar=Marcela%20Rom%C3%A1n" target="_blank"><span class=" link-mostrar-ventana txt-gris-art">Marcela Román.</span></a></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:1:j_id303" style="white-space:normal!important;"><div class="autor-resultado"><a href="revista.oa?id=551" target="_blank}"><span class="txtTabla">REICE. Revista Iberoamericana sobre Calidad, Eficacia y Cambio en Educaci&oacute;n</span></a></div></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:1:j_id309"><a href="toc.oa?id=551&numero=14094" target="_blank"><span class="txtTabla">2009 7</span><span class="txtTabla">(4)</span></a></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:1:j_id321"><div class="links-resultado"><div class="enlaces-links-resultado"></div></div></td><td class="dr-table-cell rich-table-cell " id="j_id287:tablaTextoCompleto:1:j_id342"><div style="text-align:center"><a href="articulo.oa?id=55114094006" target="_blank}"><span class="txtTabla"> PDF [es] </span></a>
+							<br />
+							<br /></div></td></tr></tbody></table><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></div><div class="paginadorFiltro">
+	<script>
+		function cambiaPag(indAct,indCam,indFin,link,panel){
+			var url = link+indCam+"#"+panel;
+			if(indCam <= 0 || indCam == indAct || indCam > indFin ){
+				return false;
+			}else{
+				document.location.href=url;
+				return false;
+			}
+		}
+	</script>
+<form id="j_id361" name="j_id361" method="post" action="/busquedaArticuloFiltros.oa" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id361" value="j_id361" />
+
+		<table class="tbl-pag">
+			<tr>
+				<td onclick="cambiaPag( 1 , 1 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;p=t&amp;idp=' , 'panel' );" class="btn-art-inactivo" title="P&aacute;gina 1">&laquo;&laquo;
+				</td>
+				<td onclick="cambiaPag( 1 , 0 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;p=t&amp;idp=' , 'panel' );" class="btn-art-inactivo" title="P&aacute;gina Anterior">&laquo;
+				</td>
+					<td onclick="cambiaPag( 1 , 1 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;p=t&amp;idp=' , 'panel' );" class="pagSelec" title="P&aacute;gina 1 de 1">1
+					</td>
+				<td onclick="cambiaPag( 1 , 2 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;p=t&amp;idp=' , 'panel' );" class="btn-art-inactivo" title="Siguiente P&aacute;gina">&raquo;
+				</td>
+				<td onclick="cambiaPag(1 , 1 , 1 , 'busquedaArticuloFiltros.oa?q=&quot;fracaso escolar AND Chile&quot;&amp;a=&amp;i=&amp;d=&amp;cvePais=&amp;p=t&amp;idp=' , 'panel' )" class="btn-art-inactivo" title="P&aacute;gina 1">&raquo;&raquo;
+				</td>
+			</tr>
+		</table><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></div><div style="margin:0 auto;">
+<form id="j_id377" name="j_id377" method="post" action="/busquedaArticuloFiltros.oa" class="paginadorCel" enctype="application/x-www-form-urlencoded" style="display:none;">
+<input type="hidden" name="j_id377" value="j_id377" />
+
+		<p style="padding: 5px 0 0 0;"><a href="#panel">P&aacute;gina 1</a>
+		</p><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" />
+</form></div></div></div><div id="pie">
+	   	<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-3153272-1']);
+			_gaq.push(['_trackPageview']);
+				 (function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		<div style="clear: both;"></div><div id="pie-fondo" style="background:#E5E5E5;width:100%;padding:0;height:90px;"><div id="pie-info" style="width:90%; margin: 0 auto;height: 90px;max-width:1008.679px;min-width:320px;"><div class="pie-uni" style="float:left;margin-top:10px;width:80%;"><span id="pie-uaemex" style="display:inline-block;text-align:center;">
+					    	<a href="http://www.uaemex.mx" target="_blank" id="i-uaem"><div class="logouaem"></div>
+					    	</a></span><div class="txt-pie" style="display:inline-block;width:250px;font-family: Helvetica;color: #333333;">Universidad Aut&oacute;noma del Estado de M&eacute;xico
+				    	<br />Sistema de Informaci&oacute;n Cient&iacute;fica Redalyc &reg;</div><div class="txt-pie ver-pie" style="display:inline-block;margin-left:20%;font-family: Helvetica;color: #333333;">Versi&oacute;n 3.0 | 2018
+				    	<br />redalyc@redalyc.org</div></div><div class="pie-openAccess" style="width:93px;float:right;"><div class="openAccess" style="float:right;text-align:center;margin-top:10px;">
+					    	<a href="https://www.openarchives.org/" target="_blank"><div class="openAccessNaranja"></div>
+					    	</a></div></div></div></div></div></div>
+			</body>
+		</html>
