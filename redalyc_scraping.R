@@ -115,14 +115,25 @@ df.redalyc_4 <- redalyc_df(url)
 #                       Search for "school failure" & "Chile"
 #                           Date of search 10-07-2019
 
-url <- "https://www.redalyc.org/busquedaArticuloFiltros.oa?q=%22school%20failure%20AND%20Chile%22&idp=1"
+#url <- "https://www.redalyc.org/busquedaArticuloFiltros.oa?q=%22school%20failure%20AND%20Chile%22&idp=1"
 
 # this query yield no results
+
+
+#============================ REDALYC.ORG SEARCH Nº6 ============================
+#                       Search for "adult education" & "Chile"
+#                           Date of search 05-07-2019
+
+url <- "https://www.redalyc.org/busquedaArticuloFiltros.oa?q=%22adult%20education%20AND%20Chile%22&idp=1"
+
+df.redalyc_6 <- redalyc_df(url)
+
+
 
 #============================ Consolidating and exporting data ============================
 
 # merging all the df
 final_redalyc_df <- rbind(df.redalyc_1, df.redalyc_2, df.redalyc_3,
-                          df.redalyc_4)
+                          df.redalyc_4, df.redalyc_6)
 
 write.table(final_redalyc_df, "redalyc_data.csv", sep = ";", row.names=F)

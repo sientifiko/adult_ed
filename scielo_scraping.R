@@ -89,7 +89,7 @@ df.scielo_5 <- scielo_df(url)
 
 
 #============================ SCIELO.ORG SEARCH Nº6 ============================
-#                       Search for "school failure" & "Chile"
+#                       Search for "adult education" & "Chile"
 #                           Date of search 05-07-2019
 
 url <- "https://search.scielo.org/?q=%28%22adult+education%22%29+AND+%28Chile%29&lang=pt&count=50&from=0&output=site&sort=&format=summary&fb=&page=1&q=%28%22adult+education%22%29+AND+%28Chile%29&lang=pt&page=1"
