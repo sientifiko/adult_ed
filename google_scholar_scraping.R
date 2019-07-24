@@ -20,15 +20,26 @@ google_scholar_df <- function(url, iterations){
   titles <- c()
   links <- c()
   url <- str_replace(url, "0", "TO_REPLACE" )
+  
   # this loop fills the titles and links vector
   for(i in 1:iterations){
     
-    to_replace <- paste(p, "0", sep = "")
+    aux_links <- html_nodes(page,"h3.gs_rt")
     
-    titles <- append(titles, html_text(html_nodes(page, "h3.gs_rt" )))
-    links <- append(links, html_attr(html_nodes(page,"h3.gs_rt > a"), "href"))
+    if(length( which( is.na( html_node( aux_links, "a" ) )) ) != 0){
+      i_remove <- c(which(is.na(html_node(aux_links, "a"))))
+      aux_links <- aux_links[-i_remove]
+    }
     
-    page <- read_html( str_replace(url, "TO_REPLACE", to_replace )  )
+    # auxiliar self-overwriting vectors
+    aux_titles <- html_text(aux_links)
+    aux_links <- html_attr(html_node(aux_links, "a"), "href")
+    
+    # appending titles and links vectors with the auxiliars
+    titles <- append(titles, aux_titles)
+    links <- append(links, aux_links)
+    
+    page <- read_html( str_replace(url, "TO_REPLACE", paste0(p, "0") )  )
     closeAllConnections()
     
     p <- p + 1
@@ -42,22 +53,20 @@ google_scholar_df <- function(url, iterations){
 
 
 clean_vector <- function(titles){
-  for (i in 1:length(titles)) {
-    
-    val <- ( str_detect(titles, "CITAS")[i] |  str_detect(titles, "CITATION")[i] )
-    
-    if(is.na(val|missing(val))){
-      val <- T
-    }
-    
-    if( val ){
-      print(paste("removing: ", titles[i], "Nº:", i))
-      titles[i] <- "to_delete"
-    }
-  }
-  if(length(which(titles == "to_delete")>0)){
-    titles <- titles[-c(which(titles == "to_delete"))]
-  }
+  # for (i in 1:length(titles)) {  #   
+  #   val <- ( str_detect(titles, "CITAS")[i] |  str_detect(titles, "CITATION")[i] )  #   
+  #   if(is.na(val|missing(val))){
+  #     val <- T
+  #   }  #   
+  #   if( val ){
+  #     print(paste("removing: ", titles[i], "Nº:", i))
+  #     titles[i] <- "to_delete"
+  #   }
+  # }
+  # if(length(which(titles == "to_delete")>0)){
+  #   titles <- titles[-c(which(titles == "to_delete"))]
+  # }
+  
   
   # remove unnecesary characters from titles
   titles <- gsub("PDF","", titles)
@@ -89,39 +98,8 @@ url <- "https://scholar.google.cl/scholar?start=0&q=%22fracaso+escolar%22+AND+Ch
 df.gscholar_2 <- google_scholar_df(url)
 
 
-
-page <- read_html(url)
-closeAllConnections()
-
-p <- 1
-titles <- c()
-links <- c()
-url <- str_replace(url, "0", "TO_REPLACE" )
-# this loop fills the titles and links vector
-for(i in 1:10){
-  
-  to_replace <- paste(p, "0", sep = "")
-  
-  titles <- append(titles, html_text(html_nodes(page, "h3.gs_rt" )))
-  links <- append(links, html_attr(html_nodes(page,"h3.gs_rt > a"), "href"))
-  
-  page <- read_html( str_replace(url, "TO_REPLACE", to_replace )  )
-  closeAllConnections()
-  
-  p <- p + 1
-}# end of loop
-
-asd <- clean_vector(titles)
-
-page <- read_html( str_replace(url, "TO_REPLACE", "30" )  )
-closeAllConnections()
-
-asd <- html_nodes(page,"h3.gs_rt")
-
-is.na( html_node( asd[6], "a" ) )
-
-### una solución más universal, es identificar los títulos que tengan NA, y pitearse ese índice
-# desde títulos
-
+#============================ SCHOLAR.GOOGLE.CL SEARCH Nº3 ============================
+#                       Search for "educación de adultos" & "Chile"
+#                           Date of search XX-07-2019
 
 
