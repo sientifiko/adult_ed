@@ -1,5 +1,5 @@
 
-library(curl); library(xml2); library(rvest);library(stringr)
+library(curl); library(xml2); library(rvest);library(stringr);library(curl)
 
 
 #============================ General function definition ============================
@@ -38,7 +38,7 @@ google_scholar_df <- function(url, iterations){
     # appending titles and links vectors with the auxiliars
     titles <- append(titles, aux_titles)
     links <- append(links, aux_links)
-    
+    Sys.sleep(2)
     page <- read_html( str_replace(url, "TO_REPLACE", paste0(p, "0") )  )
     closeAllConnections()
     
@@ -82,7 +82,7 @@ clean_vector <- function(titles){
   
 #============================ SCHOLAR.GOOGLE.CL SEARCH Nº1 ============================
 #                        Search for "deserción" & "Chile"
-#                          Date of search 16-07-2019
+#                          Date of search 23-07-2019
 
 url <- "https://scholar.google.cl/scholar?start=0&q=deserci%C3%B3n+AND+Chile&hl=es&as_sdt=1,5"
 
@@ -91,7 +91,7 @@ df.gscholar_1 <- google_scholar_df(url)
 
 #============================ SCHOLAR.GOOGLE.CL SEARCH Nº2 ============================
 #                          Search for "fracaso escolar" & "Chile"
-#                              Date of search 16-07-2019
+#                              Date of search 23-07-2019
 
 url <- "https://scholar.google.cl/scholar?start=0&q=%22fracaso+escolar%22+AND+Chile&hl=en&as_sdt=1,5"
 
@@ -100,6 +100,12 @@ df.gscholar_2 <- google_scholar_df(url)
 
 #============================ SCHOLAR.GOOGLE.CL SEARCH Nº3 ============================
 #                       Search for "educación de adultos" & "Chile"
-#                           Date of search XX-07-2019
+#                           Date of search 24-07-2019
+
+url <- "https://scholar.google.cl/scholar?start=0&q=%22educaci%C3%B3n+de+adultos%22+AND+Chile&hl=en&as_sdt=1,5"
+
+df.gscholar_3 <- google_scholar_df(url)
+
+
 
 
